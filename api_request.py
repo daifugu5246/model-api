@@ -1,7 +1,7 @@
 if __name__ == "__main__":
     import requests
 
-    url = "http://127.0.0.1:8000/generate"
+    url = "https://qp6u3o0dakmdy0-8000.proxy.runpod.net/generate"
 
     data = {
         "instruction": "วิเคราะห์ผลประกอบการไตรมาสล่าสุดของ PTT",
