@@ -1,0 +1,20 @@
+if __name__ == "__main__":
+    import requests
+
+    url = "http://127.0.0.1:8000/generate"
+
+    data = {
+        "instruction": "วิเคราะห์ผลประกอบการไตรมาสล่าสุดของ PTT",
+        "data": "รายได้สุทธิของ PTT ในไตรมาสล่าสุดเพิ่มขึ้น 15%",
+        "event": "ราคาน้ำมันดิบพุ่งสูงขึ้นในตลาดโลก"
+    }
+
+    params = {
+        "symbol": "PTT",
+        "quarter": "Q1_66"
+    }
+
+    response = requests.post(url, json=data, params=params)
+
+    print("Status Code:", response.status_code)
+    print("Response:", response.json())
