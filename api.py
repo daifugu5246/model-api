@@ -1,4 +1,5 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+from vector_store_loader import select_and_combine_retrievers, load_all_vector_stores
 from pydantic import BaseModel
 from peft import PeftModel
 import torch
@@ -28,6 +29,9 @@ lora_model = PeftModel.from_pretrained(base_model, adapter_model)
 
 # load model to device
 lora_model = lora_model.to(device)
+
+# load vector store
+vector_store = load_all_vector_stores()
 
 # format retriever
 format_retriever = '''###Instruction: {}
@@ -76,8 +80,19 @@ class PromptModel(BaseModel):
     event: str
 
 # ฝากแทนเขียน function นี้ด้วยนะครับ
-def retriever(retriever_prompt):
-    pass
+def retriever(retriever_prompt,symbol,quarter):    
+    report_vector_stores = vector_store[f"report_vector_stores"] #รับ dict จาก vectorstore_loader
+    news_vector_stores = vector_store[f"news_vector_stores"]
+    report = report_vector_stores[f"vector_store_{symbol}_{quarter}"]     #กำหนด vectorstore
+    news = news_vector_stores[f"vector_store_{symbol}_news"]
+
+    retriever, docs_with_scores = select_and_combine_retrievers(
+    symbol=None,
+    quarter=None,
+    report_vectorstore=report, 
+    news_vectorstore=news, 
+    instruction = retriever_prompt)
+    return retriever
 
 
 # API
@@ -88,13 +103,13 @@ def read_root():
     return {"message": "Finacial Articles Writing using Artificial Intelligence."}
 
 @app.post("/generate")
-def generate(req: PromptModel):
+def generate(req: PromptModel, symbol:str, quarter:str):
     
     start = time.time()
     
     # retrieve data
     retriever_prompt = format_retriever.format(req.instruction, req.data, req.event)
-    retrieved = retriever(retriever_prompt)
+    retrieved = retriever(retriever_prompt,symbol,quarter)
 
     # generate
     prompt = format_prompt.format(req.instruction, req.data, req.event, retrieved)
