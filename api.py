@@ -4,14 +4,17 @@ from pydantic import BaseModel
 from peft import PeftModel
 import torch
 import time
-from fastapi import FastAPI
-import uvicorn
+
+from fastapi import FastAPI, Query, Body
+from fastapi.middleware.cors import CORSMiddleware
+
 
 # device status
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print("Using device:",device)
 print("Device name:", torch.cuda.get_device_properties('cuda').name)
 print("FlashAttention available:", torch.backends.cuda.flash_sdp_enabled())
+torch.cuda.empty_cache()
 
 # load base model
 model_name = "KBTG-Labs/THaLLE-0.1-7B-fa"
@@ -101,12 +104,20 @@ def retriever(retriever_prompt,symbol,quarter):
 # API
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],  
+    allow_headers=["*"], 
+)
+
 @app.get("/")
 def read_root():
     return {"message": "Finacial Articles Writing using Artificial Intelligence."}
 
 @app.post("/generate")
-def generate(req: PromptModel, symbol:str, quarter:str):
+def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str = Query(...)):
     
     start = time.time()
     
