@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from peft import PeftModel
 import torch
 import time
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, Body
 from fastapi.middleware.cors import CORSMiddleware
 # device status
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -100,10 +100,10 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[""],
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=[""],  
-    allow_headers=[""], 
+    allow_methods=["*"],  
+    allow_headers=["*"], 
 )
 
 @app.get("/")
@@ -111,7 +111,7 @@ def read_root():
     return {"message": "Finacial Articles Writing using Artificial Intelligence."}
 
 @app.post("/generate")
-def generate(req: PromptModel, symbol:str, quarter:str):
+def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str = Query(...)):
     
     start = time.time()
     
