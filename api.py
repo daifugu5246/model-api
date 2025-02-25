@@ -6,11 +6,14 @@ import torch
 import time
 from fastapi import FastAPI, Query, Body
 from fastapi.middleware.cors import CORSMiddleware
+
+
 # device status
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print("Using device:",device)
 print("Device name:", torch.cuda.get_device_properties('cuda').name)
 print("FlashAttention available:", torch.backends.cuda.flash_sdp_enabled())
+torch.cuda.empty_cache()
 
 # load base model
 model_name = "KBTG-Labs/THaLLE-0.1-7B-fa"
