@@ -7,6 +7,7 @@ import time
 
 from fastapi import FastAPI, Query, Body
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
 
 # device status
@@ -148,4 +149,4 @@ def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str 
     return {"message": response, "generated_time": generated_time}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, timeout_keep_alive=1000)
+    uvicorn.run(app, host="0.0.0.0", port=8000, timeout_keep_alive=1000, reload=True)
