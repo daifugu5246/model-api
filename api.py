@@ -5,7 +5,7 @@ from peft import PeftModel
 import torch
 import time
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 # device status
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print("Using device:",device)
@@ -97,6 +97,14 @@ def retriever(retriever_prompt,symbol,quarter):
 
 # API
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[""],
+    allow_credentials=True,
+    allow_methods=[""],  
+    allow_headers=[""], 
+)
 
 @app.get("/")
 def read_root():
