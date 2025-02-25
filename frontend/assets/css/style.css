@@ -159,7 +159,7 @@ input[type="radio"]:checked + label::before {
   overflow-x: hidden;
   box-sizing: border-box;
   word-wrap: break-word;
-  white-space: normal;
+  white-space: pre-line;
   color: #fff;
   resize: none;
 }
