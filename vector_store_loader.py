@@ -85,19 +85,22 @@ def load_all_vector_stores():
     report_base_path = "./data/VECTOR_STORE_1600"
     news_base_path = "./data/VECTOR_STORE_NEWS_1600"
 
-    symbols = ["BANPU", "BCP", "GULF", "IRPC", "PTT", "PTTEP", "PTTGC", "TOP"]
+    symbols = ["PTT"]
     quarters = ["Q1_67", "Q2_67", "Q1_66", "Q2_66", "Q3_66", "Q4_66"]
 
     # โหลดข้อมูล
     report_vector_stores, report_failed_files = load_report_vector_stores(report_base_path, symbols, quarters, embeddings)
     news_vector_stores, news_failed_files = load_news_vector_stores(news_base_path, symbols, embeddings)
 
+    # print(report_vector_stores)
     return {
         "report_vector_stores": report_vector_stores,
         "news_vector_stores": news_vector_stores,
         "report_failed_files": report_failed_files,
         "news_failed_files": news_failed_files
     }
+
+# print(load_all_vector_stores())
 
 # ตรวจสอบ vectorstore
 # report_vector_data = load_all_vector_stores()

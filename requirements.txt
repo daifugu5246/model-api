@@ -1,0 +1,10 @@
+fastapi[standard]
+bitsandbytes
+transformers
+peft
+pydantic
+langchain_community
+langchain 
+langchain_huggingface
+faiss-cpu
+uvicorn

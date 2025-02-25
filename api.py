@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from peft import PeftModel
 import torch
 import time
+
 from fastapi import FastAPI, Query, Body
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -89,6 +90,8 @@ def retriever(retriever_prompt,symbol,quarter):
     report = report_vector_stores[f"vector_store_{symbol}_{quarter}"]     #กำหนด vectorstore
     news = news_vector_stores[f"vector_store_{symbol}_news"]
 
+    # print(report_vector_stores)
+
     retriever, docs_with_scores = select_and_combine_retrievers(
     symbol=None,
     quarter=None,
@@ -121,7 +124,7 @@ def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str 
     # retrieve data
     retriever_prompt = format_retriever.format(req.instruction, req.data, req.event)
     retrieved = retriever(retriever_prompt,symbol,quarter)
-
+    print("Retrieved Relevant Data.")
     # generate
     prompt = format_prompt.format(req.instruction, req.data, req.event, retrieved)
     inputs = tokenizer(prompt, return_tensors="pt").to(device)
@@ -138,8 +141,11 @@ def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str 
         output_ids[len(input_ids):] for input_ids, output_ids in zip(inputs.input_ids, outputs)
     ]
     response = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
-    
     end = time.time()
     generated_time = end - start
+    print("Respones Article.")
 
     return {"message": response, "generated_time": generated_time}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000, timeout_keep_alive=1000)
