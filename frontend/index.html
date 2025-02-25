@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Article Writing</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- header -->
+     <header>
+        <img class="kmitl", src="assets/icons/kmitlName.png" alt="logo">
+        <div class="nameProject">
+            <p>Financial Article Writing using AI</p>
+            
+        </div>
+     </header>
+
+    <!-- Main -->
+    <div class="container">
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="quater">
+                <h3 class="label">Quarter</h3>
+                <div class="radio-group">
+                    <input type="radio" id="Q1_66" name="quarter" checked>
+                    <label for="Q1_66">Q1/66</label>
+
+                    <input type="radio" id="Q2_66" name="quarter">
+                    <label for="Q2_66">Q2/66</label>
+
+                    <input type="radio" id="Q3_66" name="quarter">
+                    <label for="Q3_66">Q3/66</label>
+
+                    <input type="radio" id="Q4_66" name="quarter">
+                    <label for="Q4_66">Q4/66</label>
+
+                    <input type="radio" id="Q1_67" name="quarter">
+                    <label for="Q1_67">Q1/67</label>
+
+                    <input type="radio" id="Q2_67" name="quarter">
+                    <label for="Q2_67">Q2/67</label>
+                </div>
+            </div>
+            
+            <h3>Instruction</h3>
+            <textarea id="instruction"
+            placeholder="กรุณากรอกคำสั่งสำหรับสร้างร่างบทวิเคราะห์หุ้นรายตัวที่คุณต้องการ"></textarea>
+
+            <h3>Data</h3>
+            <textarea id="data"
+            placeholder="กรุณากรอกข้อมูลเชิงปริมาณ เช่น กำไรรายไตรมาส, ราคาเป้าหมาย, ส่วนแบ่งกำไร"></textarea>
+
+            <h3>Event</h3>
+            <textarea id="event"
+            placeholder="กรุณากรอกข้อมูลเชิงคุณภาพที่กล่าวถึงเหตุการณ์ต่าง ๆ เช่น การประชุมนักวิเคราะห์, การลดกำลังการผลิต, คำแนะนำการลงทุน"></textarea>
+
+            <button id="enter-btn">Enter Input</button>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <div class="output-header">
+                <h3>Article</h3>
+                <button id="copy-btn">Copy Article</button>
+            </div>
+            <div id="article-output"> </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
