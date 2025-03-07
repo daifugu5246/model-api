@@ -73,7 +73,7 @@ def select_and_combine_retrievers(symbol:str, quarter:str, report_vectorstore, n
     if not retrievers:
         raise ValueError("No valid retrievers found for the given symbols, quarters, or news.")
 
-    return CombinedRetriever(retrievers=retrievers), docs_with_scores_all
+    return retrievers, docs_with_scores_all
 
 def load_all_vector_stores():
     report_base_path = "./data/VECTOR_STORE_1600"
