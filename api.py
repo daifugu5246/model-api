@@ -4,8 +4,9 @@ from pydantic import BaseModel
 from peft import PeftModel
 import torch
 import time
+import os
 
-from fastapi import FastAPI, Query, Body
+from fastapi import FastAPI, Query, Body, Response
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
@@ -114,10 +115,16 @@ app.add_middleware(
 )
 
 @app.get("/")
+def main():
+    with open('./frontend/index.html') as fh:
+        data = fh.read()
+    return Response(content=data, media_type="text/html")
+
+@app.get("/api")
 def read_root():
     return {"message": "Finacial Articles Writing using Artificial Intelligence."}
 
-@app.post("/generate")
+@app.post("/api/generate")
 def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str = Query(...)):
     
     start = time.time()
