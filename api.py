@@ -156,4 +156,4 @@ def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str 
     return {"message": response, "generated_time": generated_time}
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000, timeout_keep_alive=1000)
+    uvicorn.run("api:app", host="0.0.0.0", port=8000, timeout_keep_alive=10000, reload=True)
