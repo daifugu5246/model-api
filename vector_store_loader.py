@@ -62,19 +62,13 @@ def select_and_combine_retrievers(symbol:str, quarter:str, report_vectorstore, n
     docs_with_scores_all = []
 
     docs_with_scores = report_vectorstore.similarity_search_with_score(instruction, k=5)
-    filter_docs = [(doc, score) for doc, score in docs_with_scores if score > q1_report]
-    if filter_docs:
-        report_retriever = report_vectorstore.as_retriever(search_kwargs={"k": len(filter_docs)})  # สามารถปรับ k ได้ตามต้องการ
-        retrievers.append(report_retriever)
-        docs_with_scores_all.extend(filter_docs)
-
+    filter_docs = [doc for doc, score in docs_with_scores if score > 0]
+    retrievers.append(filter_docs)
+    
     # รวม retrievers สำหรับข่าว
     news_with_scores = news_vectorstore.similarity_search_with_score(instruction, k=5)
-    filter_docs = [(doc, score) for doc, score in news_with_scores if score > q1_news]
-    if filter_docs :
-        news_retriever = news_vectorstore.as_retriever(search_kwargs={"k": len(filter_docs)})
-        retrievers.append(news_retriever)
-        docs_with_scores_all.extend(filter_docs)
+    filter_news = [doc for doc, score in news_with_scores if score > 0]
+    retrievers.append(filter_news)
 
     if not retrievers:
         raise ValueError("No valid retrievers found for the given symbols, quarters, or news.")
