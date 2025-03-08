@@ -1,7 +1,7 @@
 if __name__ == "__main__":
     import requests
 
-    url = "https://qp6u3o0dakmdy0-8000.proxy.runpod.net/generate"
+    url = "https://bmb4iu9kvo2tfc-8000.proxy.runpod.net/generate"
 
     data = {
         "instruction": "วิเคราะห์ผลประกอบการไตรมาสล่าสุดของ PTT",
@@ -14,7 +14,7 @@ if __name__ == "__main__":
         "quarter": "Q1_66"
     }
 
-    response = requests.post(url, json=data, params=params)
+    response = requests.post(url, json=data, params=params, timeout=1000)
 
     print("Status Code:", response.status_code)
     print("Response:", response.json())

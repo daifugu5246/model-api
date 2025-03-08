@@ -8,7 +8,7 @@ document.getElementById("enter-btn").addEventListener("click", async () => {
     const data = document.getElementById("data").value.trim();
     const event = document.getElementById("event").value.trim();
 
-    const BACKEND_URL = "https://s9lziq5qd7aeec-8000.proxy.runpod.net/api/generate";
+    const BACKEND_URL = "https://6kcsrr4203uq77-8000.proxy.runpod.net/api/generate";
 
     if (!quarter || !instruction.trim() || !data.trim() || !event.trim()) {
         alert("โปรดกรอกข้อมูลให้ครบทุกช่อง");
@@ -33,7 +33,7 @@ document.getElementById("enter-btn").addEventListener("click", async () => {
 
     try {
         // ส่งข้อมูลไปยัง backend โดยใช้ Axios
-        const response = await axios.post(`${BACKEND_URL}?${params.toString()}`, input, {Headers: {"Content-Type" :"application/json"}});
+        const response = await axios.post(`${BACKEND_URL}?${params.toString()}`, input, {Headers: {"Content-Type" :"application/json"}, timeout : 600000});
 
         // ตรวจสอบ response
         console.log("Response จาก Backend:", response.data);

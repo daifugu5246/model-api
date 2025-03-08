@@ -8,6 +8,7 @@ import os
 
 from fastapi import FastAPI, Query, Body, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 
 
@@ -114,12 +115,6 @@ app.add_middleware(
     allow_headers=["*"], 
 )
 
-@app.get("/")
-def main():
-    with open('./frontend/index.html') as fh:
-        data = fh.read()
-    return Response(content=data, media_type="text/html")
-
 @app.get("/api")
 def read_root():
     return {"message": "Finacial Articles Writing using Artificial Intelligence."}
@@ -154,6 +149,10 @@ def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str 
     print("Respones Article.")
 
     return {"message": response, "generated_time": generated_time}
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 if __name__ == "__main__":
     uvicorn.run("api:app", host="0.0.0.0", port=8000, timeout_keep_alive=10000, reload=True)
