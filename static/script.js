@@ -33,7 +33,7 @@ document.getElementById("enter-btn").addEventListener("click", async () => {
 
     try {
         // ส่งข้อมูลไปยัง backend โดยใช้ Axios
-        const response = await axios.post(`${BACKEND_URL}?${params.toString()}`, input, {Headers: {"Content-Type" :"application/json"}, timeout : 600000});
+        const response = await axios.post(`${BACKEND_URL}?${params.toString()}`, input, {headers: {"Content-Type" :"application/json"}, timeout : 600000});
 
         // ตรวจสอบ response
         console.log("Response จาก Backend:", response.data);
