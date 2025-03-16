@@ -146,6 +146,8 @@ def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str 
     response = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
     end = time.time()
     generated_time = end - start
+    print(response)
+    print("generated time:", generated_time)
     print("Respones Article.")
 
     return {"message": response, "generated_time": generated_time}
