@@ -204,3 +204,31 @@ input[type="radio"]:checked + label::before {
       height: 100px;
   }
 }
+
+.loader {
+  border: 5px solid #999999;
+  border-top: 5px solid #e96208;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+  
+  opacity: 1;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* จัดให้ Loader อยู่ตรงกลางของ `article-output` */
+#article-output {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150px;
+  text-align: center;
+}
