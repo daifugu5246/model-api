@@ -30,6 +30,13 @@ document.getElementById("enter-btn").addEventListener("click", async () => {
     enterBtn.disabled = true;
     enterBtn.style.opacity = "0.6";
 
+    const articleOP = document.getElementById("article-output");
+    articleOP.style.display = "flex";
+    articleOP.style.justifyContent = "center";
+    articleOP.style.alignItems = "center";
+    articleOP.style.minHeight = "150px";
+    articleOP.style.textAlign = "center";
+
     try {
         const input = { instruction, data, event };
         const params = new URLSearchParams({ symbol, quarter });
@@ -62,9 +69,15 @@ document.getElementById("enter-btn").addEventListener("click", async () => {
         loader.style.opacity = "0";
         loader.style.visibility = "hidden";
         loader.style.display = "none";
-    } finally {
-        enterBtn.disabled = false;
     }
+    articleOP.style.display = "";
+    articleOP.style.justifyContent = "";
+    articleOP.style.alignItems = "";
+    articleOP.style.minHeight = "";
+    articleOP.style.textAlign = "";
+    
+    enterBtn.disabled = false;
+    enterBtn.style.opacity = "1.0";
 });
 
 //copy-btn Function

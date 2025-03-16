@@ -225,10 +225,10 @@ input[type="radio"]:checked + label::before {
 }
 
 /* จัดให้ Loader อยู่ตรงกลางของ `article-output` */
-#article-output {
+/* #article-output {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 150px;
   text-align: center;
-}
+} */
