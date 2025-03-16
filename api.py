@@ -6,7 +6,7 @@ import torch
 import time
 import os
 
-from fastapi import FastAPI, Query, Body, Response
+from fastapi import FastAPI, Query, Body, Response, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import uvicorn
@@ -61,6 +61,7 @@ Event:
 ###Output:
 
 '''
+results = {}
 
 """ prompt = 'PTT คือ บริษัทเกี่ยวกับอะไร?'
 
@@ -103,6 +104,40 @@ def retriever(retriever_prompt,symbol,quarter):
     instruction = retriever_prompt)
     return retriever
 
+def generate_task(task_id: str, instruction: str, data: str, event: str, symbol: str, quarter: str):
+    start = time.time()
+    
+    # Retrieve data
+    retriever_prompt = format_retriever.format(instruction, data, event)
+    retrieved = retriever(retriever_prompt, symbol, quarter)
+    print("Retrieved Relevant Data.")
+
+    # Generate output
+    prompt = format_prompt.format(instruction, data, event, retrieved)
+    inputs = tokenizer(prompt, return_tensors="pt").to(device)
+    outputs = lora_model.generate(
+        inputs['input_ids'],
+        max_new_tokens=2048,
+        temperature=0.8,
+        top_k=50,
+        top_p=0.8,
+        repetition_penalty=1.1,
+        pad_token_id=tokenizer.eos_token_id
+    )
+
+    # Decode output
+    outputs = [
+        output_ids[len(input_ids):] for input_ids, output_ids in zip(inputs.input_ids, outputs)
+    ]
+    response = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
+    
+    end = time.time()
+    generated_time = end - start
+
+    print(f"Task {task_id} completed.")
+    
+    # Save result
+    results[task_id] = {"message": response, "generated_time": generated_time}
 
 # API
 app = FastAPI()
@@ -120,37 +155,25 @@ def read_root():
     return {"message": "Finacial Articles Writing using Artificial Intelligence."}
 
 @app.post("/api/generate")
-def generate(req: PromptModel = Body(...), symbol:str = Query(...), quarter:str = Query(...)):
-    
-    start = time.time()
-    
-    # retrieve data
-    retriever_prompt = format_retriever.format(req.instruction, req.data, req.event)
-    retrieved = retriever(retriever_prompt,symbol,quarter)
-    print("Retrieved Relevant Data.")
-    # generate
-    prompt = format_prompt.format(req.instruction, req.data, req.event, retrieved)
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
-    outputs = lora_model.generate(
-        inputs['input_ids'], 
-        max_new_tokens=2048,
-        temperature=0.8,
-        top_k=50,
-        top_p=0.8,
-        repetition_penalty=1.1,
-        pad_token_id=tokenizer.eos_token_id
-    )
-    outputs = [
-        output_ids[len(input_ids):] for input_ids, output_ids in zip(inputs.input_ids, outputs)
-    ]
-    response = tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
-    end = time.time()
-    generated_time = end - start
-    print(response)
-    print("generated time:", generated_time)
-    print("Respones Article.")
+async def generate(
+    background_tasks: BackgroundTasks,
+    req: PromptModel = Body(...),
+    symbol: str = Query(...),
+    quarter: str = Query(...)
+):
+    # Generate a unique task ID
+    task_id = f"{symbol}_{quarter}_{int(time.time())}"
 
-    return {"message": response, "generated_time": generated_time}
+    # Start the task in the background
+    background_tasks.add_task(generate_task, task_id, req.instruction, req.data, req.event, symbol, quarter)
+
+    return {"task_id": task_id, "status": "Processing"}
+
+@app.get("/api/result")
+async def get_result(task_id: str):
+    if task_id in results:
+        return results.pop(task_id)  # Remove result after sending
+    return {"status": "Processing"}
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
