@@ -1,20 +1,33 @@
-### ความต้องการของฮาร์ดแวร์ (Hardware Requirements)
+## ความต้องการของฮาร์ดแวร์ (Hardware Requirements)
 เนื่องจากจำเป็นต้องใช้งานโมเดลภาษาขนาดใหญ่ (Large Language Model: LLM) จึงต้องการอุปกรณ์คอมพิวเตอร์ที่มีประสิทธิภาพสูง เพื่อการสร้างบทวิเคราะห์ที่รวดเร็ว และมีประสิทธิภาพสูงสุด โดยในการใช้งานโมเดลจำเป็นอุปกรณ์คอมพิวเตอร์จะมีความต้องการดังนี้
-•	GPU: A100 VRAM 40 GB or Equivalent
-•	RAM: ≥ 16 GB
-•	พื้นที่จัดเก็บ : ≥ 30 GB
-### ความต้องการของซอฟต์แวร์ (Software Requirements)
+
+- **GPU**: A100 VRAM 40 GB or Equivalent
+- **RAM**: ≥ 16 GB
+- **พื้นที่จัดเก็บ**: ≥ 30 GB
+
+## ความต้องการของซอฟต์แวร์ (Software Requirements)
 เนื่องจากจำเป็นต้องอัปโหลด (Upload) โมเดลภาษาขนาดใหญ่ (LLM) เข้าไปในหน่วยประมวลผลกราฟิก (Graphics Processing Unit: GPU) โดยคณะผู้จัดทำเลือกใช้หน่วยประมวลผลกราฟิก (GPU) รุ่น Nvidia A100 VRAM 40 GB ซึ่งมีแพลตฟอร์มที่ต้องทำการติดตั้ง เพื่อช่วยในการประมวลผลแบบคู่ขนาน พร้อมกับซอฟต์แวร์อื่น ๆ (Software) ดังนี้
-•	CUDA version 12.4
-•	Python version 3.10 or above
-•	Git
-### การติดตั้งโปรแกรม (Installation)
-1.	ทำการ clone repository ด้วยการใช้คำสั่ง
-git clone https://github.com/daifugu5246/model-api.git
-2.	เข้าไปในโฟลเดอร์ model-api โดยใช้คำสั่ง
-cd model-api
-3.	ทำการติดตั้ง package ที่ต้องใช้งานโดยใช้คำสั่ง
-pip install -r requirements.txt
-4.	เปิดใช้งานเว็บแอปพลิเคชันโดยใช้คำสั่ง
-python api.py
-ซึ่งเว็บแอปพลิเคชันจะทำงานอยู่ใน Port 8000 ของเครื่อง โดยเข้าผ่าน Public IP (0.0.0.0:8000)
+
+- **CUDA version** 12.4
+- **Python version** 3.10 or above
+- **Git**
+
+## การติดตั้งโปรแกรม (Installation)
+1. ทำการ clone repository ด้วยการใช้คำสั่ง
+   ```sh
+   git clone https://github.com/daifugu5246/model-api.git
+   ```
+2. เข้าไปในโฟลเดอร์ `model-api` โดยใช้คำสั่ง
+   ```sh
+   cd model-api
+   ```
+3. ทำการติดตั้ง package ที่ต้องใช้งานโดยใช้คำสั่ง
+   ```sh
+   pip install -r requirements.txt
+   ```
+4. เปิดใช้งานเว็บแอปพลิเคชันโดยใช้คำสั่ง
+   ```sh
+   python api.py
+   ```
+   
+   ซึ่งเว็บแอปพลิเคชันจะทำงานอยู่ใน Port `8000` ของเครื่อง โดยเข้าผ่าน Public IP (`0.0.0.0:8000`)
